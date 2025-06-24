@@ -5,6 +5,8 @@ Este projeto consiste em um sistema de desktop para gerenciamento de uma bibliot
 O objetivo é permitir que o usuário cadastre, organize e acompanhe todos os jogos que possui ou já jogou, abrangendo diversas plataformas como PC, PlayStation, Xbox, Nintendo e Mobile.
 O Sistema oferece funcionalidades de CRUD (Create, Read, Update e Delete) para gerenciar as informações de cada jogo, como nome, plataforma gênero, status de progresso, nota pessoal e comentários.
 
+***
+
 ## Explicação da Modelagem
 
 **Diagrama de Classes do Projeto**
@@ -13,12 +15,14 @@ O Sistema oferece funcionalidades de CRUD (Create, Read, Update e Delete) para g
 
 * **Entidade `Jogo`**: É a classe central do modelo. Ela representa um jogo e armazena todos os seus atributos principais, como `nome`, `nota` e `comentarios`. Esta classe é mapeada como uma entidade JPA para a tabela `jogos` no banco de dados.
 
-* * **Enumerações (`Plataforma`, `Genero`, `Status`)**: Para garantir a consistência e a integridade dos dados, foram utilizadas enumerações para campos com valores predefinidos.
+* **Enumerações (`Plataforma`, `Genero`, `Status`)**: Para garantir a consistência e a integridade dos dados, foram utilizadas enumerações para campos com valores predefinidos.
     * `Plataforma`: Define as plataformas de jogos permitidas (PC, PLAYSTATION, etc.).
     * `Genero`: Define os gêneros dos jogos (RPG, ACAO, etc.).
     * `Status`: Define o estado atual do jogo na coleção do usuário (JOGANDO, FINALIZADO, etc.).
     * O relacionamento entre a entidade `Jogo` e esses dados é mapeado pela anotação `@Enumerated(EnumType.STRING)`, que salva o nome do valor do enum no banco de dados.
-   
+
+***
+
 ## Como Usar o Sistema
 Para executar este projeto em sua máquina local, siga o passo a passo.
 
@@ -49,7 +53,9 @@ Para executar este projeto em sua máquina local, siga o passo a passo.
 3.  As tabelas do banco serão criadas automaticamente na primeira execução, graças à configuração do JPA.
 4.  Execute a classe principal que contém a interface gráfica para iniciar o sistema.
 
-## 🛠️ Tecnologias Utilizadas
+***
+
+## Tecnologias Utilizadas
 
 * **Linguagem:** Java
 * **Gerenciador de Projetos:** Apache Maven
