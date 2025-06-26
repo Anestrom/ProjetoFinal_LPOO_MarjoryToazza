@@ -4,11 +4,13 @@
  */
 package control;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Jogo;
+import model.Status;
 
 /**
  *
@@ -24,7 +26,7 @@ public class PersistenciaJPA implements InterfaceBD {
         factory = Persistence.createEntityManagerFactory("pf_lpoo_marjorytoazza");
         entity = factory.createEntityManager();
     }
- 
+
     @Override
     public Boolean conexaoAberta() {
         return entity != null && entity.isOpen();
@@ -37,11 +39,6 @@ public class PersistenciaJPA implements InterfaceBD {
         }
     }
 
-    @Override
-    public Object find(Class c, Object id) throws Exception {
-        return getEntityManager().find(c, id);
-    }
-    
     @Override
     public void persist(Object o) throws Exception {
         entity = getEntityManager();
@@ -79,14 +76,14 @@ public class PersistenciaJPA implements InterfaceBD {
             throw e;
         }
     }
-    
+
     public EntityManager getEntityManager() {
         if (entity == null || !entity.isOpen()) {
             entity = factory.createEntityManager();
         }
         return entity;
     }
-    
+
     @Override
     public Jogo buscarJogoPorId(int id) throws Exception {
         return (Jogo) this.find(Jogo.class, id);
@@ -94,13 +91,83 @@ public class PersistenciaJPA implements InterfaceBD {
 
     @Override
     public List<Jogo> listarJogos() {
-        entity = getEntityManager();
+        EntityManager em = getEntityManager();
         try {
-            TypedQuery<Jogo> query = entity.createQuery("SELECT j FROM Jogo j ORDER BY j.nome ASC", Jogo.class);
+            TypedQuery<Jogo> query = em.createQuery("SELECT j FROM Jogo j ORDER BY j.nome ASC", Jogo.class);
             return query.getResultList();
         } catch (Exception e) {
-            Logger.getLogger(PersistenciaJPA.class.getName()).log(Level.SEVERE, "Erro ao buscar a lista de jogos", e);
-            return null;
+            return new ArrayList<>();
         }
+    }
+
+    // Retorna o total de jogos finalizados
+    @Override
+    public int getTotalJogosFinalizados() {
+        List<Jogo> todosOsJogos = this.listarJogos();
+        int contador = 0;
+        for (Jogo jogo : todosOsJogos) {
+            if (jogo.getStatus() == Status.FINALIZADO) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    // Retorna o total de jogos em andamento
+    @Override
+    public int getTotalJogosEmAndamento() {
+        List<Jogo> todosOsJogos = this.listarJogos();
+        int contador = 0;
+        for (Jogo jogo : todosOsJogos) {
+            if (jogo.getStatus() == Status.JOGANDO) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    // Média de todas as notas dos jogos
+    @Override
+    public Double getMediaNotas() {
+        List<Jogo> todosOsJogos = this.listarJogos();
+        if (todosOsJogos.isEmpty()) {
+            return 0.0; 
+        }
+        double somaDasNotas = 0.0;
+        for (Jogo jogo : todosOsJogos) { 
+            somaDasNotas += jogo.getNota(); 
+        }
+        return somaDasNotas / todosOsJogos.size(); 
+    }
+
+    // Filtro para os jogos
+    @Override
+    public List<Jogo> filtrarJogos(Status status, String nome) {
+        List<Jogo> todosOsJogos = this.listarJogos(); 
+        List<Jogo> jogosFiltrados = new ArrayList<>();
+
+        for (Jogo jogo : todosOsJogos) { 
+            boolean corresponde = true;
+
+            if (status != null && jogo.getStatus() != status) {
+                corresponde = false;
+            }
+
+            if (corresponde && nome != null && !nome.trim().isEmpty()) {
+                if (!jogo.getNome().toLowerCase().contains(nome.toLowerCase())) {
+                    corresponde = false;
+                }
+            }
+
+            if (corresponde) {
+                jogosFiltrados.add(jogo);
+            }
+        }
+        return jogosFiltrados;
+    }
+
+    @Override
+    public Object find(Object o, Object id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
