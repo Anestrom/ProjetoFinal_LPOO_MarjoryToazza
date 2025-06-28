@@ -11,15 +11,24 @@ O Sistema oferece funcionalidades de CRUD (Create, Read, Update e Delete) para g
 
 **Diagrama de Classes do Projeto**
 
-![Diagrama de Classes](imagem)
+![Diagrama de Classes](/assets/Diagrama_Classes_Biblioteca.jpg)
 
 * **Entidade `Jogo`**: É a classe central do modelo. Ela representa um jogo e armazena todos os seus atributos principais, como `nome`, `nota` e `comentarios`. Esta classe é mapeada como uma entidade JPA para a tabela `jogos` no banco de dados.
 
 * **Enumerações (`Plataforma`, `Genero`, `Status`)**: Para garantir a consistência e a integridade dos dados, foram utilizadas enumerações para campos com valores predefinidos.
-    * `Plataforma`: Define as plataformas de jogos permitidas (PC, PLAYSTATION, etc.).
-    * `Genero`: Define os gêneros dos jogos (RPG, ACAO, etc.).
-    * `Status`: Define o estado atual do jogo na coleção do usuário (JOGANDO, FINALIZADO, etc.).
+    * `Plataforma`: Define as plataformas de jogos permitidas (PC, PLAYSTATION, XBOX, NINTENDO e MOBILE).
+    * `Genero`: Define os gêneros dos jogos (ACAO, AVENTURA, RPG, ESTRATEGIA, ESPORTES e MUNDO_ABERTO).
+    * `Status`: Define o estado atual do jogo na coleção do usuário (JOGANDO, FINALIZADO, ABANDONADO e PROXIMO).
     * O relacionamento entre a entidade `Jogo` e esses dados é mapeado pela anotação `@Enumerated(EnumType.STRING)`, que salva o nome do valor do enum no banco de dados.
+
+***
+
+## Funcionalidades Principais
+
+* **Tela Principal:** Apresenta estatísticas rápidas sobre a coleção, como total de jogos, jogos finalizados, jogos em andamento e a média de notas da biblioteca.
+* **Cadastro de Jogos:** Permite adicionar novos jogos à coleção através de um formulário completo com validação de campos obrigatórios.
+* **Gerenciamento da Biblioteca:** Tela principal para visualização de todos os jogos em uma tabela, com funcionalidades para Editar e Excluir jogos selecionados.
+* **Filtro de Jogos:** Na tela de gerenciamento, é possível filtrar a lista de jogos por status e por nome para facilitar a busca.
 
 ***
 
@@ -63,3 +72,8 @@ Para executar este projeto em sua máquina local, siga o passo a passo.
 * **Banco de Dados:** PostgreSQL
 * **Interface Gráfica:** Java Swing 
 * **Testes:** JUnit 5
+
+***
+
+## Autor
+### Marjory Ane Toazza
