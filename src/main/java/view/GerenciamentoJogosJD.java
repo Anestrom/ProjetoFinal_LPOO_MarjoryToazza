@@ -4,11 +4,22 @@
  */
 package view;
 
+import control.InterfaceBD;
+import control.PersistenciaJPA;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Jogo;
+import model.Status;
+
 /**
  *
  * @author toazz
  */
 public class GerenciamentoJogosJD extends javax.swing.JDialog {
+
+    private InterfaceBD persistencia;
 
     /**
      * Creates new form GerenciamentoJogosJD
@@ -16,6 +27,40 @@ public class GerenciamentoJogosJD extends javax.swing.JDialog {
     public GerenciamentoJogosJD(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        cmbStatus.setModel(new DefaultComboBoxModel<>(Status.values()));
+        
+        this.persistencia = new PersistenciaJPA();
+        
+        carregarTabela();
+    }
+
+    private void carregarTabela() {
+        try {
+            String[] colunas = {"ID", "Nome", "Plataforma", "Gênero", "Status", "Nota"};
+
+            DefaultTableModel model = new DefaultTableModel(colunas, 0);
+
+            InterfaceBD jpa = new PersistenciaJPA();
+            List<Jogo> lista = jpa.listarJogos();
+
+            for (Jogo jogo : lista) {
+                Object[] linha = {
+                    jogo.getId(),
+                    jogo.getNome(),
+                    jogo.getPlataforma(),
+                    jogo.getGenero(),
+                    jogo.getStatus(),
+                    jogo.getNota()
+                };
+                model.addRow(linha);
+            }
+
+            tblJogos.setModel(model);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar jogos: " + e.getMessage());
+        }
     }
 
     /**
@@ -27,19 +72,24 @@ public class GerenciamentoJogosJD extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        paneJogos = new javax.swing.JScrollPane();
+        tblJogos = new javax.swing.JTable();
+        cmbStatus = new javax.swing.JComboBox<>();
+        txtNome = new javax.swing.JTextField();
+        btnFiltrar = new javax.swing.JButton();
+        lblNome = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        lblTitulo = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        paneJogos.setToolTipText("");
+        paneJogos.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+
+        tblJogos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -50,63 +100,192 @@ public class GerenciamentoJogosJD extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        paneJogos.setViewportView(tblJogos);
 
-        jButton1.setText("Filtrar");
+        cmbStatus.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
-        jLabel1.setText("Nome:");
+        btnFiltrar.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        btnFiltrar.setText("Filtrar");
+        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Status:");
+        lblNome.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        lblNome.setText("Nome:");
 
-        jButton2.setText("Editar");
+        lblStatus.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        lblStatus.setText("Status:");
 
-        jButton3.setText("Excluir");
+        btnEditar.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        lblTitulo.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        lblTitulo.setText("Biblioteca");
+
+        btnCancelar.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(paneJogos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStatus)
+                                .addGap(3, 3, 3)
+                                .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblNome)
+                                .addGap(3, 3, 3)
+                                .addComponent(txtNome)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFiltrar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(lblTitulo)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(lblTitulo)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFiltrar)
+                    .addComponent(lblNome)
+                    .addComponent(lblStatus))
+                .addGap(18, 18, 18)
+                .addComponent(paneJogos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar))
                 .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        try {
+            Status statusSelecionado = (Status) cmbStatus.getSelectedItem();
+            String nomeDigitado = txtNome.getText();
+
+            List<Jogo> listaFiltrada = this.persistencia.filtrarJogos(statusSelecionado, nomeDigitado);
+            
+            DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Nome", "Plataforma", "Gênero", "Status", "Nota"}, 0);
+
+            for (Jogo jogo : listaFiltrada) {
+                model.addRow(new Object[]{
+                    jogo.getId(),
+                    jogo.getNome(),
+                    jogo.getPlataforma(),
+                    jogo.getGenero(),
+                    jogo.getStatus(),
+                    jogo.getNota()
+                });
+            }
+
+            tblJogos.setModel(model);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao aplicar filtro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int linhaSelecionada = tblJogos.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um jogo para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            Object valorCelula = tblJogos.getValueAt(linhaSelecionada, 0);
+            Integer idJogo = Integer.valueOf(valorCelula.toString());
+
+            Jogo jogoParaEditar = (Jogo) this.persistencia.find(Jogo.class, idJogo);
+
+            if (jogoParaEditar != null) {
+                java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+                CadastroJogoJD formulario = new CadastroJogoJD(parent, true, jogoParaEditar);
+                formulario.setVisible(true);
+
+                carregarTabela();
+            } else {
+                JOptionPane.showMessageDialog(this, "Jogo não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar o jogo para edição: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linhaSelecionada = tblJogos.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um jogo para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir o jogo selecionado?", "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+            try {
+                Object valorCelula = tblJogos.getValueAt(linhaSelecionada, 0);
+                Integer idJogo = Integer.valueOf(valorCelula.toString());
+
+                Jogo jogoParaRemover = (Jogo) this.persistencia.find(Jogo.class, idJogo);
+
+                if (jogoParaRemover != null) {
+                    persistencia.remover(jogoParaRemover);
+                    JOptionPane.showMessageDialog(this, "Jogo excluído com sucesso!");
+                    carregarTabela();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir jogo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,14 +330,16 @@ public class GerenciamentoJogosJD extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JComboBox<Status> cmbStatus;
+    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JScrollPane paneJogos;
+    private javax.swing.JTable tblJogos;
+    private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,12 +15,13 @@ import model.Status;
 public interface InterfaceBD {
     public void persist(Object o) throws Exception;
     public void remover(Object o) throws Exception;
-    public Object find(Object o, Object id) throws Exception;
+    public Object find(Class o, Object id) throws Exception;
     
     public Jogo buscarJogoPorId(int id) throws Exception;
     public List<Jogo> listarJogos();
     public List<Jogo> filtrarJogos(Status status, String nome);
 
+    public int getTotalJogos();
     public int getTotalJogosFinalizados();
     public int getTotalJogosEmAndamento();
     public Double getMediaNotas();

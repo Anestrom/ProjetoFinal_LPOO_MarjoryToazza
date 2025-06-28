@@ -100,6 +100,17 @@ public class PersistenciaJPA implements InterfaceBD {
         }
     }
 
+    // Retorna o total de jogos cadastrados
+    @Override
+    public int getTotalJogos() {
+        List<Jogo> todosOsJogos = this.listarJogos();
+        int contador = 0;
+        for (Jogo jogo : todosOsJogos) {
+            contador++;
+        }
+        return contador;
+    }
+    
     // Retorna o total de jogos finalizados
     @Override
     public int getTotalJogosFinalizados() {
@@ -167,7 +178,7 @@ public class PersistenciaJPA implements InterfaceBD {
     }
 
     @Override
-    public Object find(Object o, Object id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Object find(Class o, Object id) throws Exception {
+       return this.getEntityManager().find(o, id);
     }
 }

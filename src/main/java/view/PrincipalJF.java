@@ -29,8 +29,10 @@ public class PrincipalJF extends javax.swing.JFrame {
 
         int finalizados = persistencia.getTotalJogosFinalizados();
         int emAndamento = persistencia.getTotalJogosEmAndamento();
+        int total = persistencia.getTotalJogos();
         Double media = persistencia.getMediaNotas();
 
+        lblTotal.setText("Total de Jogos: " + total);
         lblFinalizados.setText("Jogos Finalizados: " + finalizados);
         lblEmAndamento.setText("Jogos em Andamento: " + emAndamento);
         lblMediaNotas.setText(String.format("Média de Notas: %.1f", media));
@@ -55,7 +57,8 @@ public class PrincipalJF extends javax.swing.JFrame {
         lblFinalizados = new javax.swing.JLabel();
         lblEmAndamento = new javax.swing.JLabel();
         lblMediaNotas = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        lblTotal = new javax.swing.JLabel();
+        menuPrincipal = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         itemNovoJogo = new javax.swing.JMenuItem();
         menuGerenciar = new javax.swing.JMenu();
@@ -78,12 +81,20 @@ public class PrincipalJF extends javax.swing.JFrame {
         lblMediaNotas.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         lblMediaNotas.setText("Média de Notas:");
 
+        lblTotal.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        lblTotal.setText("Total de Jogos:");
+
         menuCadastro.setText("Cadastro");
 
         itemNovoJogo.setText("Novo Jogo");
+        itemNovoJogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemNovoJogoActionPerformed(evt);
+            }
+        });
         menuCadastro.add(itemNovoJogo);
 
-        jMenuBar1.add(menuCadastro);
+        menuPrincipal.add(menuCadastro);
 
         menuGerenciar.setText("Gerenciar");
 
@@ -95,16 +106,21 @@ public class PrincipalJF extends javax.swing.JFrame {
         });
         menuGerenciar.add(itemBiblioteca);
 
-        jMenuBar1.add(menuGerenciar);
+        menuPrincipal.add(menuGerenciar);
 
         menuAjuda.setText("Ajuda");
 
         itemSobre.setText("Sobre");
+        itemSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSobreActionPerformed(evt);
+            }
+        });
         menuAjuda.add(itemSobre);
 
-        jMenuBar1.add(menuAjuda);
+        menuPrincipal.add(menuAjuda);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,6 +129,7 @@ public class PrincipalJF extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTotal)
                     .addComponent(lblFinalizados)
                     .addComponent(lblEmAndamento)
                     .addComponent(lblMediaNotas)
@@ -124,23 +141,40 @@ public class PrincipalJF extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(lblBemVindo)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(lblTotal)
+                .addGap(18, 18, 18)
                 .addComponent(lblFinalizados)
                 .addGap(18, 18, 18)
                 .addComponent(lblEmAndamento)
                 .addGap(18, 18, 18)
                 .addComponent(lblMediaNotas)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(69, 69, 69))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBibliotecaActionPerformed
-        // TODO add your handling code here:
-        GerenciamentoJogosJD telaGer = new GerenciamentoJogosJD(this, true); // 'this' é a TelaPrincipal
+
+        GerenciamentoJogosJD telaGer = new GerenciamentoJogosJD(this, true);
         telaGer.setVisible(true);
+        
+        carregarDashboard(); 
     }//GEN-LAST:event_itemBibliotecaActionPerformed
+
+    private void itemNovoJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNovoJogoActionPerformed
+        CadastroJogoJD telaCad = new CadastroJogoJD(this, true, null); 
+        telaCad.setVisible(true);
+        
+        carregarDashboard(); 
+    }//GEN-LAST:event_itemNovoJogoActionPerformed
+
+    private void itemSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSobreActionPerformed
+
+        SobreJD telaSobre = new SobreJD(this, true); 
+        telaSobre.setVisible(true);
+    }//GEN-LAST:event_itemSobreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,13 +215,14 @@ public class PrincipalJF extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemBiblioteca;
     private javax.swing.JMenuItem itemNovoJogo;
     private javax.swing.JMenuItem itemSobre;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel lblBemVindo;
     private javax.swing.JLabel lblEmAndamento;
     private javax.swing.JLabel lblFinalizados;
     private javax.swing.JLabel lblMediaNotas;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenu menuGerenciar;
+    private javax.swing.JMenuBar menuPrincipal;
     // End of variables declaration//GEN-END:variables
 }
